@@ -105,6 +105,12 @@ export default function App() {
     } catch (error: any) {
       if (error?.code === 'auth/popup-closed-by-user' || error?.code === 'auth/cancelled-popup-request') {
         console.log('Login popup closed by user');
+      } else if (error?.code === 'auth/configuration-not-found') {
+        console.error('Login error:', error);
+        toast.error('Google Sign-In is not enabled in your Firebase Console. Please enable it in the Authentication tab.', { duration: 6000 });
+      } else if (error?.code === 'auth/unauthorized-domain') {
+        console.error('Login error:', error);
+        toast.error(`This domain (${window.location.hostname}) is not authorized for OAuth operations. Please add it to Authorized Domains in your Firebase Console.`, { duration: 8000 });
       } else {
         console.error('Login error:', error);
         toast.error('Failed to log in. Please try again.');

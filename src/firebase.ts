@@ -6,6 +6,7 @@ import { getAnalytics } from "firebase/analytics";
 const firebaseConfig = {
   apiKey: "AIzaSyCZR9U6W9uZJUylyPfG3YI6oXTXBxAA7rw",
   authDomain: "unihack-19282.firebaseapp.com",
+  databaseURL: "https://unihack-19282-default-rtdb.firebaseio.com",
   projectId: "unihack-19282",
   storageBucket: "unihack-19282.firebasestorage.app",
   messagingSenderId: "898238309422",
