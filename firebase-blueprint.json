@@ -1,0 +1,109 @@
+{
+  "entities": {
+    "User": {
+      "title": "User",
+      "description": "A university student user of the platform.",
+      "type": "object",
+      "properties": {
+        "email": { "type": "string", "format": "email" },
+        "displayName": { "type": "string" },
+        "university": { "type": "string" },
+        "campus": { "type": "string" },
+        "avgRating": { "type": "number" },
+        "strikeCount": { "type": "integer" },
+        "isBannedFromPosting": { "type": "boolean" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["email", "displayName", "university", "createdAt"]
+    },
+    "MealListing": {
+      "title": "Meal Listing",
+      "description": "A meal posted by a student cook.",
+      "type": "object",
+      "properties": {
+        "cookId": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "ingredients": { "type": "string" },
+        "allergens": { "type": "string" },
+        "imageUrl": { "type": "string" },
+        "type": { "type": "string", "enum": ["Marketplace", "Rescue"] },
+        "priceCents": { "type": "integer" },
+        "servingsAvailable": { "type": "integer" },
+        "pickupLocationText": { "type": "string" },
+        "pickupLat": { "type": "number" },
+        "pickupLng": { "type": "number" },
+        "status": { "type": "string", "enum": ["Active", "SoldOut", "Cancelled"] },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["cookId", "title", "type", "priceCents", "servingsAvailable", "status", "createdAt"]
+    },
+    "Order": {
+      "title": "Order",
+      "description": "A transaction for a meal.",
+      "type": "object",
+      "properties": {
+        "mealId": { "type": "string" },
+        "buyerId": { "type": "string" },
+        "cookId": { "type": "string" },
+        "quantity": { "type": "integer" },
+        "mealPriceCents": { "type": "integer" },
+        "buyerFeeCents": { "type": "integer" },
+        "makerFeeCents": { "type": "integer" },
+        "totalPaidCents": { "type": "integer" },
+        "status": { "type": "string", "enum": ["Pending", "Completed", "Cancelled", "Flagged"] },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "completedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["mealId", "buyerId", "cookId", "quantity", "status", "createdAt"]
+    },
+    "Review": {
+      "title": "Review",
+      "description": "A review left by a buyer for a cook.",
+      "type": "object",
+      "properties": {
+        "orderId": { "type": "string" },
+        "cookId": { "type": "string" },
+        "buyerId": { "type": "string" },
+        "stars": { "type": "integer" },
+        "comment": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["orderId", "cookId", "buyerId", "stars", "createdAt"]
+    },
+    "StrikeEvent": {
+      "title": "Strike Event",
+      "description": "A moderation event for a cook.",
+      "type": "object",
+      "properties": {
+        "cookId": { "type": "string" },
+        "orderId": { "type": "string" },
+        "reason": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["cookId", "orderId", "reason", "createdAt"]
+    }
+  },
+  "firestore": {
+    "/users/{userId}": {
+      "schema": "User",
+      "description": "User profiles."
+    },
+    "/meals/{mealId}": {
+      "schema": "MealListing",
+      "description": "Available meal listings."
+    },
+    "/orders/{orderId}": {
+      "schema": "Order",
+      "description": "Meal orders."
+    },
+    "/reviews/{reviewId}": {
+      "schema": "Review",
+      "description": "Meal reviews."
+    },
+    "/strikes/{strikeId}": {
+      "schema": "StrikeEvent",
+      "description": "Moderation strikes."
+    }
+  }
+}

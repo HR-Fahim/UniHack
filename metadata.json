@@ -1,0 +1,7 @@
+{
+  "name": "UniEats",
+  "description": "A student-to-student meal sharing platform for university campuses, featuring marketplace and rescue meals.",
+  "requestFramePermissions": [
+    "geolocation"
+  ]
+}
