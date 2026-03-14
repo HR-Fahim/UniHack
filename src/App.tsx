@@ -58,7 +58,7 @@ export default function App() {
         
         if (userDoc.exists()) {
           const data = userDoc.data() as UserProfile;
-          if (selectedRole && data.role !== selectedRole && data.role !== 'admin') {
+          if (selectedRole && data.role !== selectedRole) {
             await setDoc(doc(db, 'users', firebaseUser.uid), { role: selectedRole }, { merge: true });
             data.role = selectedRole;
           }
@@ -75,7 +75,7 @@ export default function App() {
             strikeCount: 0,
             isBannedFromPosting: false,
             createdAt: new Date().toISOString(),
-            role: firebaseUser.email === 'hrfprofessional@gmail.com' ? 'admin' : (selectedRole || 'customer'),
+            role: selectedRole || (firebaseUser.email === 'hrfprofessional@gmail.com' ? 'admin' : 'customer'),
           };
           await setDoc(doc(db, 'users', firebaseUser.uid), newProfile);
           setProfile(newProfile);
@@ -99,8 +99,17 @@ export default function App() {
   }
 
   const handleLogin = async (role: 'customer' | 'cooker') => {
-    sessionStorage.setItem('selectedRole', role);
-    await signInWithGoogle();
+    try {
+      sessionStorage.setItem('selectedRole', role);
+      await signInWithGoogle();
+    } catch (error: any) {
+      if (error?.code === 'auth/popup-closed-by-user' || error?.code === 'auth/cancelled-popup-request') {
+        console.log('Login popup closed by user');
+      } else {
+        console.error('Login error:', error);
+        toast.error('Failed to log in. Please try again.');
+      }
+    }
   };
 
   if (!user || !profile) {

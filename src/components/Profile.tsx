@@ -115,11 +115,10 @@ export function Profile({ profile, setProfile }: ProfileProps) {
                 className="w-full pl-10 pr-4 py-3 rounded-xl border border-stone-200 focus:ring-2 focus:ring-emerald-500 outline-none appearance-none bg-white"
                 value={formData.role}
                 onChange={e => setFormData({ ...formData, role: e.target.value as 'customer' | 'cooker' | 'admin' })}
-                disabled={profile.role === 'admin'}
               >
                 <option value="customer">Customer</option>
                 <option value="cooker">Cooker</option>
-                {profile.role === 'admin' && <option value="admin">Admin</option>}
+                {profile.email === 'hrfprofessional@gmail.com' && <option value="admin">Admin</option>}
               </select>
             </div>
           </div>
