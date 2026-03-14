@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { doc, updateDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { UserProfile } from '../types';
+import { handleFirestoreError, OperationType } from '../lib/errorHandling';
 import { toast } from 'react-hot-toast';
 import { User, Mail, School, MapPin, Star, ShieldAlert } from 'lucide-react';
 
@@ -26,7 +27,7 @@ export function Profile({ profile, setProfile }: ProfileProps) {
       setProfile({ ...profile, ...formData });
       toast.success('Profile updated!');
     } catch (error) {
-      toast.error('Failed to update profile.');
+      handleFirestoreError(error, OperationType.UPDATE, `users/${profile.uid}`);
     } finally {
       setLoading(false);
     }

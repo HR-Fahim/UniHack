@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
-import { collection, query, where, onSnapshot, orderBy, addDoc, doc, updateDoc, increment } from 'firebase/firestore';
+import { collection, query, where, onSnapshot, orderBy, addDoc, doc, updateDoc, increment, getDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { MealListing, UserProfile, Order } from '../types';
 import { formatPrice } from '../lib/utils';
+import { handleFirestoreError, OperationType } from '../lib/errorHandling';
 import { Clock, MapPin, Star, AlertCircle, ShoppingBag, Utensils } from 'lucide-react';
 import { toast } from 'react-hot-toast';
 import { motion } from 'motion/react';
@@ -27,7 +28,7 @@ export function MealFeed({ profile }: MealFeedProps) {
       const mealData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as MealListing));
       setMeals(mealData);
       setLoading(false);
-    });
+    }, (err) => handleFirestoreError(err, OperationType.GET, 'meals'));
 
     return () => unsubscribe();
   }, []);
@@ -72,8 +73,7 @@ export function MealFeed({ profile }: MealFeedProps) {
 
       toast.success('Order placed successfully! Check "My Orders" for details.');
     } catch (error) {
-      console.error(error);
-      toast.error('Failed to place order.');
+      handleFirestoreError(error, OperationType.WRITE, 'place_order');
     }
   };
 

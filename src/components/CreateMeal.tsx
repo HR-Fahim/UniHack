@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import { collection, addDoc } from 'firebase/firestore';
 import { db } from '../firebase';
 import { UserProfile, MealType } from '../types';
+import { handleFirestoreError, OperationType } from '../lib/errorHandling';
 import { toast } from 'react-hot-toast';
 import { Utensils, Info, MapPin, DollarSign, Camera } from 'lucide-react';
 
@@ -55,8 +56,7 @@ export function CreateMeal({ profile, onComplete }: CreateMealProps) {
       toast.success('Meal posted successfully!');
       onComplete();
     } catch (error) {
-      console.error(error);
-      toast.error('Failed to post meal.');
+      handleFirestoreError(error, OperationType.CREATE, 'meals');
     } finally {
       setLoading(false);
     }
