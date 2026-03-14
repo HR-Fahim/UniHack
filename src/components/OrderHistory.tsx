@@ -21,23 +21,25 @@ export function OrderHistory({ profile }: OrderHistoryProps) {
   useEffect(() => {
     const qPurchases = query(
       collection(db, 'orders'),
-      where('buyerId', '==', profile.uid),
-      orderBy('createdAt', 'desc')
+      where('buyerId', '==', profile.uid)
     );
 
     const qSales = query(
       collection(db, 'orders'),
-      where('cookId', '==', profile.uid),
-      orderBy('createdAt', 'desc')
+      where('cookId', '==', profile.uid)
     );
 
     const unsubPurchases = onSnapshot(qPurchases, (snapshot) => {
-      setPurchases(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Order)));
+      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Order));
+      data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      setPurchases(data);
       if (loading) setLoading(false);
     }, (err) => handleFirestoreError(err, OperationType.GET, 'orders_purchases'));
 
     const unsubSales = onSnapshot(qSales, (snapshot) => {
-      setSales(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Order)));
+      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as Order));
+      data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      setSales(data);
       if (loading) setLoading(false);
     }, (err) => handleFirestoreError(err, OperationType.GET, 'orders_sales'));
 

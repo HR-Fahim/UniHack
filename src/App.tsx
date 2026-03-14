@@ -45,14 +45,6 @@ export default function App() {
     const unsubscribe = onAuthStateChanged(auth, async (firebaseUser) => {
       setUser(firebaseUser);
       if (firebaseUser) {
-        // Check if email is .edu.au
-        if (!firebaseUser.email?.endsWith('.edu.au') && firebaseUser.email !== 'hrfprofessional@gmail.com') {
-          toast.error('Only university students with .edu.au emails can join UniEats.');
-          await logout();
-          setLoading(false);
-          return;
-        }
-
         const userDoc = await getDoc(doc(db, 'users', firebaseUser.uid));
         const selectedRole = sessionStorage.getItem('selectedRole') as 'customer' | 'cooker' | null;
         

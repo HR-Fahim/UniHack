@@ -19,12 +19,12 @@ export function RequestsFeed({ profile }: RequestsFeedProps) {
   useEffect(() => {
     const q = query(
       collection(db, 'mealRequests'),
-      where('status', '==', 'Pending'),
-      orderBy('createdAt', 'desc')
+      where('status', '==', 'Pending')
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const requestData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as MealRequest));
+      requestData.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       setRequests(requestData);
       setLoading(false);
     }, (err) => handleFirestoreError(err, OperationType.GET, 'mealRequests'));

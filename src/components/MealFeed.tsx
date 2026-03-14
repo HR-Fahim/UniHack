@@ -20,12 +20,12 @@ export function MealFeed({ profile }: MealFeedProps) {
   useEffect(() => {
     const q = query(
       collection(db, 'meals'),
-      where('status', '==', 'Active'),
-      orderBy('createdAt', 'desc')
+      where('status', '==', 'Active')
     );
 
     const unsubscribe = onSnapshot(q, (snapshot) => {
       const mealData = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as MealListing));
+      mealData.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
       setMeals(mealData);
       setLoading(false);
     }, (err) => handleFirestoreError(err, OperationType.GET, 'meals'));

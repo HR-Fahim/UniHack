@@ -21,23 +21,25 @@ export function MyRequests({ profile }: MyRequestsProps) {
   useEffect(() => {
     const qRequests = query(
       collection(db, 'mealRequests'),
-      where('requesterId', '==', profile.uid),
-      orderBy('createdAt', 'desc')
+      where('requesterId', '==', profile.uid)
     );
 
     const qCooking = query(
       collection(db, 'mealRequests'),
-      where('cookId', '==', profile.uid),
-      orderBy('createdAt', 'desc')
+      where('cookId', '==', profile.uid)
     );
 
     const unsubRequests = onSnapshot(qRequests, (snapshot) => {
-      setMyRequests(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as MealRequest)));
+      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as MealRequest));
+      data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      setMyRequests(data);
       if (loading) setLoading(false);
     }, (err) => handleFirestoreError(err, OperationType.GET, 'mealRequests_eating'));
 
     const unsubCooking = onSnapshot(qCooking, (snapshot) => {
-      setMyCookingJobs(snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as MealRequest)));
+      const data = snapshot.docs.map(doc => ({ id: doc.id, ...doc.data() } as MealRequest));
+      data.sort((a, b) => new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime());
+      setMyCookingJobs(data);
       if (loading) setLoading(false);
     }, (err) => handleFirestoreError(err, OperationType.GET, 'mealRequests_cooking'));
 

@@ -27,22 +27,51 @@ export function Landing({ onLogin }: LandingProps) {
             UniEats connects students who love to cook with students who need a fresh, affordable meal. 
             Join your campus community today.
           </p>
-          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
-            <button
-              onClick={() => onLogin('customer')}
-              className="rounded-xl bg-emerald-500 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 transition-all w-full sm:w-auto"
-            >
-              Sign in as Customer
-            </button>
-            <button
-              onClick={() => onLogin('cooker')}
-              className="rounded-xl bg-stone-800 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-stone-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-800 transition-all w-full sm:w-auto"
-            >
-              Sign in as Cooker
-            </button>
+          
+          <div className="mt-10 grid grid-cols-1 md:grid-cols-2 gap-8 max-w-3xl mx-auto">
+            {/* Customer Card */}
+            <div className="bg-white/5 p-8 rounded-3xl border border-white/10 backdrop-blur-md flex flex-col items-center">
+              <h2 className="text-2xl font-bold text-white mb-2">For Customers</h2>
+              <p className="text-stone-300 mb-6 text-sm">Find and request delicious home-cooked meals.</p>
+              <div className="flex flex-col w-full gap-3">
+                <button
+                  onClick={() => onLogin('customer')}
+                  className="rounded-xl bg-emerald-500 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-emerald-400 transition-all w-full"
+                >
+                  Register as Customer
+                </button>
+                <button
+                  onClick={() => onLogin('customer')}
+                  className="rounded-xl bg-white/10 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-white/20 transition-all w-full"
+                >
+                  Log in as Customer
+                </button>
+              </div>
+            </div>
+
+            {/* Cooker Card */}
+            <div className="bg-white/5 p-8 rounded-3xl border border-white/10 backdrop-blur-md flex flex-col items-center">
+              <h2 className="text-2xl font-bold text-white mb-2">For Cookers</h2>
+              <p className="text-stone-300 mb-6 text-sm">Cook meals, earn money, and feed your campus.</p>
+              <div className="flex flex-col w-full gap-3">
+                <button
+                  onClick={() => onLogin('cooker')}
+                  className="rounded-xl bg-stone-800 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-stone-700 transition-all w-full"
+                >
+                  Register as Cooker
+                </button>
+                <button
+                  onClick={() => onLogin('cooker')}
+                  className="rounded-xl bg-white/10 px-6 py-3 text-base font-semibold text-white shadow-sm hover:bg-white/20 transition-all w-full"
+                >
+                  Log in as Cooker
+                </button>
+              </div>
+            </div>
           </div>
-          <p className="mt-4 text-sm text-stone-400">
-            Requires a valid .edu.au university email
+          
+          <p className="mt-8 text-sm text-stone-400">
+            Sign in with your Google account to get started.
           </p>
         </div>
       </div>
