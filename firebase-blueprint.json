@@ -12,9 +12,30 @@
         "avgRating": { "type": "number" },
         "strikeCount": { "type": "integer" },
         "isBannedFromPosting": { "type": "boolean" },
+        "role": { "type": "string", "enum": ["customer", "cooker", "admin"] },
         "createdAt": { "type": "string", "format": "date-time" }
       },
       "required": ["email", "displayName", "university", "createdAt"]
+    },
+    "MealRequest": {
+      "title": "Meal Request",
+      "description": "A request for food made by a student.",
+      "type": "object",
+      "properties": {
+        "requesterId": { "type": "string" },
+        "requesterName": { "type": "string" },
+        "title": { "type": "string" },
+        "description": { "type": "string" },
+        "budgetCents": { "type": "integer" },
+        "status": { "type": "string", "enum": ["Pending", "Accepted", "Cooking", "Ready", "Completed", "Cancelled"] },
+        "cookId": { "type": "string" },
+        "cookName": { "type": "string" },
+        "createdAt": { "type": "string", "format": "date-time" },
+        "acceptedAt": { "type": "string", "format": "date-time" },
+        "readyAt": { "type": "string", "format": "date-time" },
+        "completedAt": { "type": "string", "format": "date-time" }
+      },
+      "required": ["requesterId", "requesterName", "title", "budgetCents", "status", "createdAt"]
     },
     "MealListing": {
       "title": "Meal Listing",
@@ -88,6 +109,10 @@
     "/users/{userId}": {
       "schema": "User",
       "description": "User profiles."
+    },
+    "/mealRequests/{requestId}": {
+      "schema": "MealRequest",
+      "description": "Student food requests."
     },
     "/meals/{mealId}": {
       "schema": "MealListing",

@@ -1,5 +1,5 @@
 import React from 'react';
-import { Utensils, PlusCircle, History, User, LogOut } from 'lucide-react';
+import { Utensils, PlusCircle, History, User, LogOut, HandPlatter, ChefHat, ClipboardList } from 'lucide-react';
 import { UserProfile } from '../types';
 import { cn } from '../lib/utils';
 
@@ -11,12 +11,17 @@ interface NavbarProps {
 }
 
 export function Navbar({ view, setView, profile, onLogout }: NavbarProps) {
-  const navItems = [
-    { id: 'feed', label: 'Discovery', icon: Utensils },
-    { id: 'create', label: 'Post Meal', icon: PlusCircle },
-    { id: 'orders', label: 'My Orders', icon: History },
-    { id: 'profile', label: 'Profile', icon: User },
+  const allNavItems = [
+    { id: 'requests-feed', label: 'Cook Jobs', icon: ChefHat, roles: ['cooker', 'admin'] },
+    { id: 'request-food', label: 'Request Food', icon: HandPlatter, roles: ['customer', 'admin'] },
+    { id: 'my-requests', label: profile.role === 'cooker' ? 'My Jobs' : 'My Requests', icon: ClipboardList, roles: ['customer', 'cooker', 'admin'] },
+    { id: 'feed', label: 'Discover Meals', icon: Utensils, roles: ['customer', 'cooker', 'admin'] },
+    { id: 'create', label: 'Post Meal', icon: PlusCircle, roles: ['cooker', 'admin'] },
+    { id: 'orders', label: 'My Orders', icon: History, roles: ['customer', 'cooker', 'admin'] },
+    { id: 'profile', label: 'Profile', icon: User, roles: ['customer', 'cooker', 'admin'] },
   ];
+
+  const navItems = allNavItems.filter(item => item.roles.includes(profile.role));
 
   return (
     <nav className="bg-white border-b border-stone-200 sticky top-0 z-50">
@@ -54,12 +59,38 @@ export function Navbar({ view, setView, profile, onLogout }: NavbarProps) {
             </button>
           </div>
 
-          {/* Mobile Profile Icon */}
-          <div className="md:hidden flex items-center gap-4">
-             <button onClick={() => setView('profile')} className="p-2 rounded-full bg-stone-100">
-               <User className="w-5 h-5 text-stone-600" />
+          {/* Mobile Profile Icon & Logout */}
+          <div className="md:hidden flex items-center gap-2">
+             <button onClick={() => setView('profile')} className="p-2 rounded-full bg-stone-100 text-stone-600">
+               <User className="w-5 h-5" />
+             </button>
+             <button onClick={onLogout} className="p-2 rounded-full bg-red-50 text-red-600">
+               <LogOut className="w-5 h-5" />
              </button>
           </div>
+        </div>
+      </div>
+
+      {/* Mobile Bottom Navigation */}
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-white border-t border-stone-200 pb-safe z-50">
+        <div className="flex justify-around items-center h-16 px-2">
+          {navItems.filter(item => item.id !== 'profile').map((item) => (
+            <button
+              key={item.id}
+              onClick={() => setView(item.id)}
+              className={cn(
+                "flex flex-col items-center justify-center w-full h-full gap-1 transition-all",
+                view === item.id 
+                  ? "text-emerald-600" 
+                  : "text-stone-400 hover:text-stone-600"
+              )}
+            >
+              <item.icon className={cn("w-5 h-5", view === item.id && "fill-emerald-50")} />
+              <span className="text-[10px] font-medium truncate w-full text-center px-1">
+                {item.label}
+              </span>
+            </button>
+          ))}
         </div>
       </div>
     </nav>

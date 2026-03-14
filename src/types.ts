@@ -12,7 +12,7 @@ export interface UserProfile {
   strikeCount: number;
   isBannedFromPosting: boolean;
   createdAt: string;
-  role: 'student' | 'admin';
+  role: 'customer' | 'cooker' | 'admin';
 }
 
 export interface MealListing {
@@ -58,4 +58,20 @@ export interface Review {
   stars: number;
   comment: string;
   createdAt: string;
+}
+
+export interface MealRequest {
+  id: string;
+  requesterId: string;
+  requesterName: string;
+  title: string;
+  description: string;
+  budgetCents: number;
+  status: 'Pending' | 'Accepted' | 'Cooking' | 'Ready' | 'Completed' | 'Cancelled';
+  cookId?: string;
+  cookName?: string;
+  createdAt: string;
+  acceptedAt?: string;
+  readyAt?: string;
+  completedAt?: string;
 }

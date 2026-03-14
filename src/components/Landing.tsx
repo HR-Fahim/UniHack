@@ -2,7 +2,7 @@ import React from 'react';
 import { Utensils, ShieldCheck, Users, MapPin } from 'lucide-react';
 
 interface LandingProps {
-  onLogin: () => void;
+  onLogin: (role: 'customer' | 'cooker') => void;
 }
 
 export function Landing({ onLogin }: LandingProps) {
@@ -27,12 +27,18 @@ export function Landing({ onLogin }: LandingProps) {
             UniEats connects students who love to cook with students who need a fresh, affordable meal. 
             Join your campus community today.
           </p>
-          <div className="mt-10 flex items-center justify-center gap-x-6">
+          <div className="mt-10 flex flex-col sm:flex-row items-center justify-center gap-4">
             <button
-              onClick={onLogin}
-              className="rounded-xl bg-emerald-500 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 transition-all"
+              onClick={() => onLogin('customer')}
+              className="rounded-xl bg-emerald-500 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-emerald-400 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-emerald-400 transition-all w-full sm:w-auto"
             >
-              Sign in with Student Email
+              Sign in as Customer
+            </button>
+            <button
+              onClick={() => onLogin('cooker')}
+              className="rounded-xl bg-stone-800 px-8 py-4 text-lg font-semibold text-white shadow-sm hover:bg-stone-700 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-stone-800 transition-all w-full sm:w-auto"
+            >
+              Sign in as Cooker
             </button>
           </div>
           <p className="mt-4 text-sm text-stone-400">

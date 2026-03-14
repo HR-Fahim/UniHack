@@ -17,6 +17,7 @@ export function Profile({ profile, setProfile }: ProfileProps) {
     displayName: profile.displayName,
     university: profile.university,
     campus: profile.campus,
+    role: profile.role,
   });
 
   const handleUpdate = async (e: React.FormEvent) => {
@@ -103,6 +104,23 @@ export function Profile({ profile, setProfile }: ProfileProps) {
                 value={formData.campus}
                 onChange={e => setFormData({ ...formData, campus: e.target.value })}
               />
+            </div>
+          </div>
+
+          <div className="space-y-2">
+            <label className="text-sm font-bold text-stone-700 uppercase tracking-wider">Role</label>
+            <div className="relative">
+              <User className="absolute left-4 top-1/2 -translate-y-1/2 text-stone-400 w-4 h-4" />
+              <select
+                className="w-full pl-10 pr-4 py-3 rounded-xl border border-stone-200 focus:ring-2 focus:ring-emerald-500 outline-none appearance-none bg-white"
+                value={formData.role}
+                onChange={e => setFormData({ ...formData, role: e.target.value as 'customer' | 'cooker' | 'admin' })}
+                disabled={profile.role === 'admin'}
+              >
+                <option value="customer">Customer</option>
+                <option value="cooker">Cooker</option>
+                {profile.role === 'admin' && <option value="admin">Admin</option>}
+              </select>
             </div>
           </div>
 
